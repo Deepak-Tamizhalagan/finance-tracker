@@ -1,35 +1,67 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
+from typing import List
+from sqlalchemy.orm import Session
+
+# Import from DB setup
+from app.database import SessionLocal
+from app.models.expense_model import ExpenseDB
 
 router = APIRouter()
 
+# -------------------------------
+# 1️⃣ Pydantic Model for Request
+# -------------------------------
 class Expense(BaseModel):
-    id: int
     title: str
     amount: float
     category: str
 
-# Temporary example data 
-expenses_data = [
-    Expense(id=1, title="Groceries", amount=50.75, category="Food"),
-    Expense(id=2, title="Uber Ride", amount=18.00, category="Transport"),
-]
+# -------------------------------
+# 2️⃣ Dependency to get DB session
+# -------------------------------
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
+# -------------------------------
+# 3️⃣ API → GET /expenses
+#    Fetch from DB
+# -------------------------------
 @router.get("/expenses")
-def get_expenses():
-    return expenses_data
+def get_expenses(db: Session = Depends(get_db)):
+    expenses = db.query(ExpenseDB).all()
+    return expenses
 
+# -------------------------------
+# 4️⃣ API → POST /expenses
+#    Insert into DB
+# -------------------------------
 @router.post("/expenses")
-def add_expense(expense: Expense):
-    expenses_data.append(expense)
+def add_expense(expense: Expense, db: Session = Depends(get_db)):
+    new_expense = ExpenseDB(
+        title=expense.title,
+        amount=expense.amount,
+        category=expense.category
+    )
+    db.add(new_expense)
+    db.commit()
+    db.refresh(new_expense)
     return {"message": "Expense added!", "data": expense}
 
+# -------------------------------
+# 5️⃣ API → GET /expenses/summary
+#    Calculate total from DB
+# -------------------------------
 @router.get("/expenses/summary")
-def get_expenses_summary():
-    total_amount = sum(expense.amount for expense in expenses_data)
-    total_count = len(expenses_data)
+def get_expenses_summary(db: Session = Depends(get_db)):
+    expenses = db.query(ExpenseDB).all()
+    total_amount = sum(expense.amount for expense in expenses)
+    total_count = len(expenses)
     return {
         "total_count": total_count,
         "total_amount": total_amount
     }
-
