@@ -65,3 +65,18 @@ def get_expenses_summary(db: Session = Depends(get_db)):
         "total_count": total_count,
         "total_amount": total_amount
     }
+
+# -------------------------------
+# 6️⃣ API → DELETE /expenses/{id}
+#    Remove an expense from DB
+# -------------------------------
+@router.delete("/expenses/{expense_id}")
+def delete_expense(expense_id: int, db: Session = Depends(get_db)):
+    expense = db.query(ExpenseDB).filter(ExpenseDB.id == expense_id).first()
+
+    if not expense:
+        return {"error": "Expense not found"}
+
+    db.delete(expense)
+    db.commit()
+    return {"message": "Expense deleted!"}
