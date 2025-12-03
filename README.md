@@ -53,23 +53,23 @@ If successful, you will see:
 ```
 http://127.0.0.1:8000
 ```
-![alt text](image.png)
+![Backend Screenshot](docs/images/image.png)
 
 ```
 http://127.0.0.1:8000/expenses
 ```
-![alt text](image-2.png)
+![Expense API Screenshot](image-2.png)
 
 ```
 http://127.0.0.1:8000/expenses/summary
 ```
 
-![alt text](image-3.png)
+![Summary API screenshot](image-3.png)
 
 ```
 http://127.0.0.1:8000/docs
 ```
-![alt text](image-4.png)
+![Swagger Screenshot](image-4.png)
 
 ▶️ Step 5: Open the Frontend
 
@@ -80,7 +80,7 @@ finance-tracker/frontend/index.html
 
 Right-click → Open with Live Server
 
-![alt text](image-1.png)
+![Frontend Screenshot](image-1.png)
 
 📌 5. Expected Behavior
 
