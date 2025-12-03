@@ -6,7 +6,7 @@ This project showcases a complete end-to-end CI/CD pipeline designed to build, t
 
 The project demonstrates real-world practices like branching strategy, pull requests, automated testing, code scanning, and cloud deployment. It also includes logging, monitoring, and documentation to ensure reliability and visibility.
 
-Task 1 — Application Development (Backend, Frontend, Database)
+## Task 1 — Application Development (Backend, Frontend, Database)
 
 This task focuses on building the core application that will later be deployed through our CI/CD pipeline. We developed a simple Personal Finance Tracker where users can add, view, and delete expenses, while also viewing a real-time summary and spending breakdown. The backend uses FastAPI with SQLite for data storage, and the frontend is built using HTML, CSS, and JavaScript.
 
@@ -87,7 +87,11 @@ Right-click → Open with Live Server
 Once both backend & frontend are running:
 
 ✔️ Add an expense → Instantly stored in database
+
 ✔️ Expense list updates without reload
+
 ✔️ Summary updates live
+
 ✔️ Chart updates dynamically
+
 ✔️ Delete button removes item instantly
