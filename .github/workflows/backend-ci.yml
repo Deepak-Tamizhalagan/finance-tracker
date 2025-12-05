@@ -1,0 +1,47 @@
+name: Backend CI – Tests & Coverage
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+      - "zafar-*"
+      - zafar-9027671
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend-tests:
+    name: Run backend tests with coverage
+    runs-on: ubuntu-latest
+
+    # All "run" commands happen inside backend/ folder
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=. --cov-report=xml:coverage.xml --cov-report=term
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: backend/coverage.xml
