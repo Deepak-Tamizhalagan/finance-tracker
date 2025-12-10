@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://15.222.63.149:8000";
 let chart;
 
 document.getElementById("add-btn").addEventListener("click", addExpense);

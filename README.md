@@ -96,11 +96,6 @@ Once both backend & frontend are running:
 
 ✔️ Delete button removes item instantly
 
-### Overview
-
-As part of the capstone project, I implemented the CI/CD pipeline and basic infrastructure monitoring for the **backend** service.
-
-My scope covers:
 
 - **Task 4 – CI/CD pipeline** for backend tests and infrastructure deployment
 - **Task 6 – Monitoring & logging** of the deployed AWS resources
@@ -254,3 +249,91 @@ python -m pip install -r requirements.txt
 pip install pytest pytest-cov
 
 pytest --cov=. --cov-report=term
+## Task-2 – Infrastructure as Code (Terraform)
+
+ Deployed the complete infrastructure for Personal Finance Tracker application using Terraform on AWS. The goal of this task was to automate backend hosting, networking, security, and static frontend deployment by using Infrastructure-as-Code instead of manually configuring AWS services. Terraform helped me create everything in a reproducible way using .tf templates.
+
+ What I built
+
++ Using Terraform, I provisioned the following AWS resources automatically:
+
++ VPC
+
++ Public Subnet
+
++ Internet Gateway
+
++ EC2 instance (Ubuntu) to run FastAPI backend
+
++ Security Group for port 8000 & SSH
+
++ S3 bucket to host frontend website
+
++ CloudFront distribution to serve frontend globally
+
+Terraform also prints useful outputs such as:
+
++ EC2 Public IP
+
++ S3 bucket name
+
++ CloudFront domain
+
+<img width="437" height="190" alt="image" src="https://github.com/user-attachments/assets/697683f0-0362-42a1-9589-e15fcc4480eb" />
+
+
+### Backend Deployment
+
+After Terraform created the EC2 instance:
+
++ I SSH-ed into the instance,
+
++ installed Python and FastAPI,
+
++ activated virtual environment,
+
++ and started Uvicorn on port 8000
+
+Finally, I tested the backend using:
+
+```
+curl http://localhost:8000
+```
+
+and from browser:
+
+http://15.222.63.149:8000
+
+![Backend](docs/images/backend.png)
+
+Both returned:
+```
+{"message": "Personal Finance Tracker Backend is running"}
+```
+
+![Backend](docs/images/bc1.png)
+
+### Frontend Deployment
+
+I updated my API URL inside script.js and uploaded frontend files:
+```
+aws s3 sync . s3://finance-tracker-frontend-bucket --delete
+```
+
+CloudFront automatically picks the website from S3.
+
+Final UI:
+
+https://d1ot1jmefpd9gq.cloudfront.net
+
+![Frontend](docs/images/frontend.png)
+
+Result
+
+✔ Fully automated AWS infra using Terraform
+
+✔ Backend running on EC2
+
+✔ Frontend hosted on CloudFront (via S3)
+
+✔ Backend + frontend integrated successfully
